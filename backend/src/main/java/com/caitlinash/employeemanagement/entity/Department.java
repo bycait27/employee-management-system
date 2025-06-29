@@ -21,9 +21,6 @@ import jakarta.validation.constraints.Size;
     uniqueConstraints = {
         @UniqueConstraint(
             columnNames = {"name"}
-        ),
-        @UniqueConstraint(
-            columnNames = {"department_head_id"}
         )
     }
     )
