@@ -49,10 +49,10 @@ public class Department {
 
     // TODO: department head field (use Employee entity)
 
-    // created date 
+    // created date field 
     private LocalDateTime createdDate;
 
-    // updated date 
+    // updated date field 
     private LocalDateTime updatedDate;
 
     @PrePersist
