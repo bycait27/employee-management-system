@@ -21,6 +21,9 @@ import jakarta.validation.constraints.Size;
     uniqueConstraints = {
         @UniqueConstraint(
             columnNames = {"name"}
+        ),
+        @UniqueConstraint(
+            columnNames = {"department_head_id"}
         )
     }
     )
@@ -46,8 +49,6 @@ public class Department {
     // location field 
     @NotBlank(message = "Location is required")
     private String location;
-
-    // TODO: department head field (use Employee entity)
 
     // created date field 
     private LocalDateTime createdDate;
@@ -114,10 +115,6 @@ public class Department {
     public void setLocation(String location) {
         this.location = location;
     }
-
-    // get department head
-
-    // set department head 
 
     // get created date 
     public LocalDateTime getCreatedDate() {
