@@ -43,7 +43,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     // date-based queries
     List<Employee> findByCreatedDate(LocalDateTime createdDate);
     List<Employee> findByCreatedDateBetween(LocalDateTime start, LocalDateTime end);
-    Employee findByHiredDate(LocalDate hiredDate);
+    List<Employee> findByHiredDate(LocalDate hiredDate);
 
     // custom delete operations
 
