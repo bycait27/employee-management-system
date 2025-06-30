@@ -38,7 +38,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     void deleteByLocation(String location);
 
     // relationship queries 
-    @Query("SELECT d FROM Department d WHERE SIZE(d.employees) > 0")
+    @Query("SELECT DISTINCT d FROM Department d WHERE EXISTS (SELECT 1 FROM Employee e WHERE e.department = d)")
     List<Department> findDepartmentsWithEmployees();
     // partial matching when user types letters in department names
     List<Department> findByNameContainingIgnoreCase(String nameFragment);
