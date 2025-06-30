@@ -29,10 +29,10 @@ public class UserService {
     // validation method 
     private void validateUserData(String username, String email) {
         if (userRepository.existsByUsername(username)) {
-            throw new RuntimeException("Username already exists: " + username);
+            throw new RuntimeException("User already exists with that username: " + username);
         }
         if (userRepository.existsByEmail(email)) {
-            throw new RuntimeException("Email already exists: " + email);
+            throw new RuntimeException("User already exists with that email: " + email);
         }
     }
 
@@ -63,10 +63,12 @@ public class UserService {
 
         // create new user
         User user = new User();
+
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
+
         return userRepository.save(user);
     }
 
@@ -96,12 +98,12 @@ public class UserService {
         return userRepository.findByUsernameOrEmail(username, email);
     }
 
-    // does the user exist by this username
+    // does the user exist by this username?
     public boolean checkExistenceByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 
-    // does the user exist by this email
+    // does the user exist by this email?
         public boolean checkExistenceByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
@@ -124,7 +126,7 @@ public class UserService {
     // edit a task by id
     public User editUserById(long id, String newUsername, String newEmail, String newPassword, Role newRole) {
         // find existing user
-        User currentUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        User currentUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with this id: " + id));
         // update its fields
         currentUser.setUsername(newUsername);
         currentUser.setEmail(newEmail);
