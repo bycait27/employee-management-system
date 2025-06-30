@@ -129,11 +129,29 @@ public class DepartmentService {
 
     // delete a department by name
     public void deleteDepartmentByName(String name) {
+        Department department = getDepartmentByName(name);
+
+        // check if department with that name has employees before deleting
+        List<Employee> employees = employeeRepository.findByDepartment(department);
+        if (!employees.isEmpty()) {
+            throw new RuntimeException("Cannot delete department with " + name + "with " + employees.size() + " employees. Please reassign employees first.");
+        }
+
         departmentRepository.deleteByName(name);
     }
 
     // delete a department by location
     public void deleteDepartmentByLocation(String location) {
+        List<Department> departments = getDepartmentByLocation(location);
+
+        // check if departments at that location have employees before deleting
+        for (Department dept : departments) {
+                List<Employee> employees = employeeRepository.findByDepartment(dept);
+                if (!employees.isEmpty()) {
+                    throw new RuntimeException("Cannot delete departments in location '" + location + "'. Department '" + dept.getName() + "' has " + employees.size() + " employees.");
+                }
+        }
+
         departmentRepository.deleteByLocation(location);
     }
 
