@@ -48,7 +48,7 @@ public class LoginRequest {
 
     // ---- security method ----
 
-    // toString() methods to keep password safe
+    // toString() method (keep password safe)
     @Override
     public String toString() {
         return "LoginRequest{" +
