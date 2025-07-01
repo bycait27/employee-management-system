@@ -96,19 +96,19 @@ public class DepartmentService {
     }
 
     // edit a department by id 
-    public Department editDepartmentById(long id, String name, String description, String location) {
+    public Department editDepartmentById(long id, String newName, String newDescription, String newLocation) {
         // find existing department
         Department currentDepartment = departmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Department not found with this id: " + id));
 
         // only validate if name is changing
-        if (!currentDepartment.getName().equals(name)) {
-            validateDepartmentData(name);
+        if (!currentDepartment.getName().equals(newName)) {
+            validateDepartmentData(newName);
         }
 
         // update its fields 
-        currentDepartment.setName(name);
-        currentDepartment.setDescription(description);
-        currentDepartment.setLocation(location);
+        currentDepartment.setName(newName);
+        currentDepartment.setDescription(newDescription);
+        currentDepartment.setLocation(newLocation);
 
         // save and return 
         return departmentRepository.save(currentDepartment);
