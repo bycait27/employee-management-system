@@ -68,7 +68,7 @@ public class Employee {
     // phone number field 
     @NotBlank(message = "Phone number is required")
     @Pattern(
-        regexp = "^(\\\\+1\\\\s?)?\\\\(?[0-9]{3}\\\\)?[\\\\s.-]?[0-9]{3}[\\\\s.-]?[0-9]{4}$",
+        regexp = "^(\\+1\\s?)?\\(?[0-9]{3}\\)?[\\s.-]?[0-9]{3}[\\s.-]?[0-9]{4}$",
         message = "Phone number must be a valid US format"
     )
     @Column(name = "phoneNumber", nullable = false, unique = true)
@@ -81,9 +81,9 @@ public class Employee {
     // employee number 
     @NotBlank(message = "Employee number is required")
     @Pattern(
-    regexp = "^[A-Z]{2,3}[0-9]{4,6}$",
-    // department code + number
-    message = "Employee number must be 2-3 letters followed by 4-6 digits"
+        regexp = "^[A-Z]{2,3}[0-9]{4,6}$",
+        // department code + number
+        message = "Employee number must be 2-3 letters followed by 4-6 digits"
     )
     @Column(name = "employeeNumber", nullable = false, unique = true)
     private String employeeNumber;

@@ -59,7 +59,7 @@ public class EmployeeService {
         employee.setPosition(position);
         employee.setEmployeeNumber(employeeNumber);
         employee.setSalary(salary);
-        employee.setStatus(status);
+        employee.setStatus(Status.ACTIVE);
         employee.setDepartment(department);
         employee.setUser(user);
         employee.setHiredDate(hiredDate);
