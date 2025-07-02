@@ -15,7 +15,7 @@ public class UserResponse {
     private LocalDateTime createdDate;
     private LocalDateTime lastLogin;
 
-    // ----deault constructor and args ----
+    // ---- default constructor and args ----
 
     public UserResponse() {}
 
