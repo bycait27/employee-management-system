@@ -135,8 +135,7 @@ public class EmployeeService {
 
     // edit an employee by id
     public Employee editEmployeeById(long id, String newFirstName, String newLastName, String newEmail, String newPhoneNumber,
-    String newPosition, String newEmployeeNumber, BigDecimal newSalary, Status newStatus, Department newDepartment,
-    User newUser, LocalDate newHiredDate) {
+    String newPosition, BigDecimal newSalary, Status newStatus, Department newDepartment) {
         // find existing employee
         Employee currentEmployee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found with this id: " + id));
 
@@ -147,9 +146,6 @@ public class EmployeeService {
         if (!currentEmployee.getPhoneNumber().equals(newPhoneNumber) && employeeRepository.existsByPhoneNumber(newPhoneNumber)) {
             throw new RuntimeException("Employee already exists with that phone number: " + newPhoneNumber);
         }
-        if (!currentEmployee.getEmployeeNumber().equals(newEmployeeNumber) && employeeRepository.existsByEmployeeNumber(newEmployeeNumber)) {
-            throw new RuntimeException("Employee already exists with that employee number: " + newEmployeeNumber);
-        }
 
         // update its fields
         currentEmployee.setFirstName(newFirstName);
@@ -157,12 +153,9 @@ public class EmployeeService {
         currentEmployee.setEmail(newEmail);
         currentEmployee.setPhoneNumber(newPhoneNumber);
         currentEmployee.setPosition(newPosition);
-        currentEmployee.setEmployeeNumber(newEmployeeNumber);
         currentEmployee.setSalary(newSalary);
         currentEmployee.setStatus(newStatus);
         currentEmployee.setDepartment(newDepartment);
-        currentEmployee.setUser(newUser);
-        currentEmployee.setHiredDate(newHiredDate);
 
         // save and return
         return employeeRepository.save(currentEmployee);
