@@ -123,7 +123,7 @@ public class UserService {
         return userRepository.findByCreatedDateBetween(start, end);
     }
 
-    // edit a task by id
+    // edit a user by id
     public User editUserById(long id, String newUsername, String newEmail, String newPassword, Role newRole) {
         // find existing user
         User currentUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with this id: " + id));
