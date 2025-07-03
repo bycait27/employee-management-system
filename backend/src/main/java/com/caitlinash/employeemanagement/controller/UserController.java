@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.caitlinash.employeemanagement.dto.request.CreateUserRequest;
 import com.caitlinash.employeemanagement.dto.request.LoginRequest;
+import com.caitlinash.employeemanagement.dto.request.UpdateUserRequest;
 import com.caitlinash.employeemanagement.dto.response.UserResponse;
 import com.caitlinash.employeemanagement.entity.User;
 import com.caitlinash.employeemanagement.service.UserService;
@@ -94,11 +95,19 @@ public class UserController {
         return ResponseEntity.ok(userResponses);
     }
 
-    // todo update user by id
-    // @PutMapping("/{id}")
-    // public ResponseEntity<UserResponse> updateUserById(@PathVariable long id, ) {
+    // update user by id
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUserById(@PathVariable long id, @Valid @RequestBody UpdateUserRequest request) {
+        User user = userService.editUserById(
+            id, 
+            request.getUsername(), 
+            request.getEmail(), 
+            request.getPassword(), 
+            request.getRole()
+        );
 
-    // }
+        return ResponseEntity.ok(convertToDto(user));
+    }
 
     // delete user by id
     @DeleteMapping("/{id}")
