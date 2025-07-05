@@ -73,3 +73,12 @@ hs_err_pid*
 
 # documentation (auto-generated)
 HELP.md
+
+# environment-specific config files
+application-local.properties
+application-prod.properties
+.env
+.env.local
+
+# sensitive configuration
+**/application-secrets.properties
