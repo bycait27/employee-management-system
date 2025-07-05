@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.caitlinash.employeemanagement.dto.request.CreateUserRequest;
-import com.caitlinash.employeemanagement.dto.request.LoginRequest;
 import com.caitlinash.employeemanagement.dto.request.UpdateUserRequest;
 import com.caitlinash.employeemanagement.dto.response.UserResponse;
 import com.caitlinash.employeemanagement.entity.User;
@@ -62,17 +61,6 @@ public class UserController {
         );
     
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(user));
-    }
-
-    // login with credentials
-    @PostMapping("/login")
-    public ResponseEntity<UserResponse> loginUser(@Valid @RequestBody LoginRequest request) {
-        User user = userService.authenticateUser(
-            request.getUsernameOrEmail(), 
-            request.getPassword()
-        );
-
-        return ResponseEntity.ok(convertToDto(user));
     }
 
     // get user by id
