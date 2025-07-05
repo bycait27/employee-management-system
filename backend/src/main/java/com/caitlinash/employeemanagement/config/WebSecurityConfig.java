@@ -1,5 +1,7 @@
 package com.caitlinash.employeemanagement.config;
 
+import com.caitlinash.employeemanagement.security.AuthEntryPointJwt;
+import com.caitlinash.employeemanagement.security.AuthTokenFilter;
 import com.caitlinash.employeemanagement.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * WebSecurityConfig - main Spring Security configuration
@@ -26,6 +29,15 @@ public class WebSecurityConfig {
 
     @Autowired
     CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
+
+    // JWT Authentication Token Filter Bean
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
 
     // password encoder bean (uses BCrypt for hashing passwords)
     @Bean
@@ -55,6 +67,9 @@ public class WebSecurityConfig {
             // disable CSRF for API (using JWT)
             .csrf(csrf -> csrf.disable())
             
+            // handle unauthorized access
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+            
             // configure session management (stateless for JWT)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
@@ -79,6 +94,9 @@ public class WebSecurityConfig {
 
         // use our authentication provider
         http.authenticationProvider(authenticationProvider());
+        
+        // add JWT token filter BEFORE the username/password authentication filter
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
