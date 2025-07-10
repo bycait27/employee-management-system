@@ -24,13 +24,21 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initializeAuth = () => {
       try {
-        if (authService.isAuthenticated()) {
-          const currentUser = authService.getCurrentUser();
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        
+        if (token && userStr && authService.isAuthenticated()) {
+          const currentUser = JSON.parse(userStr);
           setUser(currentUser);
+        } else {
+          // clear invalid data
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
         authService.logout(); // clear invalid token
+        localStorage.removeItem('user');
       } finally {
         setLoading(false);
       }
@@ -39,25 +47,26 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  // login function
-  const login = async (credentials) => {
+  // sign in function
+  const signin = async (credentials) => {
     try {
       setLoading(true);
       setError(null);
       
       const response = await authService.login(credentials);
-      const { token, id, username, email, roles } = response.data;
       
-      // store token
-      localStorage.setItem('token', token);
+      const { accessToken, id, username, email, roles } = response.data;
       
-      // set user data
+      // store token and user data separately
+      localStorage.setItem('token', accessToken);
       const userData = { id, username, email, roles };
+      localStorage.setItem('user', JSON.stringify(userData));
+      
       setUser(userData);
       
       return { success: true, user: userData };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Login failed';
+      const errorMessage = error.response?.data?.message || 'Sign in failed';
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
@@ -82,9 +91,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // logout function
-  const logout = () => {
+  // sign out function
+  const signout = () => {
     authService.logout();
+    localStorage.removeItem('user'); // remove user data
     setUser(null);
     setError(null);
   };
@@ -110,9 +120,9 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     error,
-    login,
+    signin,
     signup,
-    logout,
+    signout,
     isAuthenticated,
     hasRole,
     isAdmin,
